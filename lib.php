@@ -466,7 +466,7 @@ function qcreate_print_recent_activity($course, $viewfullnames, $timestart) {
     }
 
     if (count($qcatids) > 0) {
-        $qcatsql = 'AND ('. implode($qcatids, ' OR ') .') ';
+        $qcatsql = 'AND ('. join(' OR ', $qcatids) .') ';
     } else {
         $qcatsql = '';
     }
@@ -892,8 +892,8 @@ function qcreate_process_grades($qcreate, $cm, $users) {
     $qids = clean_param_array($qids, PARAM_INT);
     if ($qids) {
         $toupdates = array();
-        $questions = $DB->get_records_select('question', 'id IN ('.implode(',', $qids).') AND '.
-                                        'createdby IN ('.implode(',', $users).')');
+        $questions = $DB->get_records_select('question', 'id IN ('.join(',', $qids).') AND '.
+                                        'createdby IN ('.join(',', $users).')');
         foreach ($qids as $qid) {
             // Test that qid is a question created by one of the users we can grade.
             if (isset($questions[$qid])) {
@@ -1148,7 +1148,7 @@ function qcreate_get_user_grades($qcreate, $userid=0) {
     $cm = get_coursemodule_from_instance('qcreate', $qcreate->id, 0, false, MUST_EXIST);
     $context = context_module::instance($cm->id);
     if (is_array($userid)) {
-        $user = "u.id IN (".implode(',', $userid).") AND";
+        $user = "u.id IN (".join(',', $userid).") AND";
     } else if ($userid) {
         $user = "u.id = $userid AND";
     } else {
@@ -1421,7 +1421,7 @@ function qcreate_pluginfile($course, $cm, $context, $filearea, array $args, $for
             foreach ($questions as $question) {
                 $qkeys[] = $question->id;
             }
-            $questionlist = join($qkeys, ',');
+            $questionlist = join(',', $qkeys);
             $sql = 'SELECT questionid, grade FROM {qcreate_grades} '.
                     'WHERE questionid IN ('.$questionlist.') AND grade >= '.$betterthangrade;
             if ($goodquestions = $DB->get_records_sql($sql)) {
@@ -1443,7 +1443,7 @@ function qcreate_pluginfile($course, $cm, $context, $filearea, array $args, $for
                 foreach ($questions as $question) {
                     $useridkeys[] = $question->createdby;
                 }
-                $useridlist = join($useridkeys, ',');
+                $useridlist = join(',', $useridkeys);
                 if (!$users = $DB->get_records_select('user', "id IN ($useridlist)")) {
                     $users = array();
                 }
@@ -1469,7 +1469,7 @@ function qcreate_pluginfile($course, $cm, $context, $filearea, array $args, $for
                     $prefixes[] = userdate($question->timecreated, get_string('strftimedatetimeshort'));
                 }
                 $prefixes[] = $question->name;
-                $question->name = join($prefixes, '-');
+                $question->name = join('-', $prefixes);
             }
         }
         $qformat->setQuestions($questions);
@@ -1511,7 +1511,7 @@ function qcreate_pluginfile($course, $cm, $context, $filearea, array $args, $for
 function qcreate_question_pluginfile($course, $context, $component,
         $filearea, $qubaid, $slot, $args, $forcedownload, array $options=array()) {
     $fs = get_file_storage();
-    $relativepath = implode('/', $args);
+    $relativepath = join('/', $args);
     $fullpath = "/$context->id/$component/$filearea/$relativepath";
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
         send_file_not_found();

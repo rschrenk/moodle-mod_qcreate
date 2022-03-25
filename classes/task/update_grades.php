@@ -60,7 +60,7 @@ class update_grades extends \core\task\scheduled_task {
                     $users = array_keys($users);
                     $sql = 'SELECT q.* FROM {question_categories} qc, {question} q '.
                            'LEFT JOIN {qcreate_grades} g ON q.id = g.questionid '.
-                           'WHERE g.timemarked IS NULL AND q.createdby IN ('.implode(',', $users).') '.
+                           'WHERE g.timemarked IS NULL AND q.createdby IN ('.join(',', $users).') '.
                                    'AND qc.id = q.category ' .
                                    'AND q.hidden=\'0\' AND q.parent=\'0\' ' .
                                    'AND qc.contextid ='.$context->id;
