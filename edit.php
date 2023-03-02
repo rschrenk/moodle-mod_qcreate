@@ -246,7 +246,7 @@ if (!empty($users) && ($showungraded || $showgraded || $showneedsregrade)) {
 
     $countsql = 'SELECT COUNT(*) FROM {user} u, {question_categories} c, {question} q '.
            'LEFT JOIN {qcreate_grades} g ON q.id = g.questionid '.
-           'WHERE ' . $where[0] . 'q.createdby = u.id AND u.id IN (' . implode(',', $users) .
+           'WHERE ' . $where[0] . 'q.createdby = u.id AND u.id IN (' . join(',', $users) .
             ') AND q.hidden=\'0\' AND q.parent=\'0\' AND q.category = c.id and c.contextid='.$context->id;
     $answercount = $DB->count_records_sql($countsql, $where[1]);
 
@@ -263,7 +263,7 @@ if (!empty($users) && ($showungraded || $showgraded || $showneedsregrade)) {
     $sql = 'FROM {user} u, {question_categories} c, {question} q '.
            'LEFT JOIN {qcreate_grades} g ON q.id = g.questionid
                                                               AND g.qcreateid = '.$qcreate->id.' '.
-           'WHERE ' . $where[0] . 'q.createdby = u.id AND u.id IN (' . implode(',', $users) .
+           'WHERE ' . $where[0] . 'q.createdby = u.id AND u.id IN (' . join(',', $users) .
             ') AND q.hidden=\'0\' AND q.parent=\'0\' AND q.category = c.id and c.contextid='.$context->id;
 } else {
     $answercount = 0;

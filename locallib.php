@@ -164,7 +164,7 @@ class qcreate {
         $update->graderatio = $formdata->graderatio;
         $update->intro = $formdata->intro;
         $update->introformat = $formdata->introformat;
-        $update->allowed = join(array_keys($formdata->allowed), ',');
+        $update->allowed = join(',', array_keys($formdata->allowed));
         $update->totalrequired = $formdata->totalrequired;
         $update->studentqaccess = $formdata->studentqaccess;
         $update->timesync = 0;
@@ -480,7 +480,7 @@ class qcreate {
         $update->graderatio = $formdata->graderatio;
         $update->intro = $formdata->intro;
         $update->introformat = $formdata->introformat;
-        $update->allowed = join(array_keys($formdata->allowed), ',');
+        $update->allowed = join(',', array_keys($formdata->allowed));
         $update->totalrequired = $formdata->totalrequired;
         $update->studentqaccess = $formdata->studentqaccess;
         $update->timeopen = $formdata->timeopen;
